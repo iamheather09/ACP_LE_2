@@ -1,14 +1,58 @@
-class student:
+class Student:
     def __init__(self, student_id, student_name, email, grades=None, courses=None):
-# 👉 initialize attributes here
-        self.student_id = student_id
-        self.student_name = student_name
+        self.id_name = (student_id, student_name)
         self.email = email
-        self.grades = grades if grades is not None else{}
-        self.courses = courses if courses is not None else{}     
-        pass 
-     
+        self.grades = grades if grades else {}
+        self.courses = courses if courses else set()
+
     def __str__(self):
-        return f"Student ID: {self.student_id}, Name: {self.student_name}, Email: {self.email}, Grades: {self.grades}, Courses: {self.courses}"
-    
-    
+        return (
+            f"ID: {self.id_name[0]}, Name: {self.id_name[1]}, Email: {self.email},\n"
+            f"Courses: {', '.join(self.courses) if self.courses else 'None'},\n"
+            f"Grades: {self.grades if self.grades else 'No grades recorded'}"
+        )
+
+class StudentRecords:
+    def __init__(self):
+        self.students = []
+
+    def add_student(self, student_id, student_name, email, grades=None, courses=None):
+        if any(s.id_name[0] == student_id for s in self.students):
+            return "Student with this ID already exists."
+        student = Student(student_id, student_name, email, grades, courses)
+        self.students.append(student)
+        return "Student added successfully."
+
+    def update_student(self, student_id, email=None, grades=None, courses=None):
+        for student in self.students:
+            if student.id_name[0] == student_id:
+                if email:
+                    student.email = email
+                if grades:
+                    student.grades.update(grades)
+                if courses:
+                    student.courses.update(courses)
+                return "Student updated successfully."
+        return "Student not found."
+
+    def delete_student(self, student_id):
+        for i, student in enumerate(self.students):
+            if student.id_name[0] == student_id:
+                del self.students[i]
+                return "Student deleted successfully."
+        return "Student not found."
+
+    def enroll_course(self, student_id, course):
+        for student in self.students:
+            if student.id_name[0] == student_id:
+                student.courses.add(course)
+                return f"Student enrolled in {course}."
+        return "Student not found."
+
+    def search_student(self, student_id):
+        for student in self.students:
+            if student.id_name[0] == student_id:
+                return str(student)
+        return "Student not found."
+
+
