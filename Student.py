@@ -55,4 +55,24 @@ class StudentRecords:
                 return str(student)
         return "Student not found."
 
+# Example usage:
+
+# Initialize the student records manager
+records = StudentRecords()
+
+# Add some students
+print(records.add_student(101, "Allen Paloma", "allenpaloma@gmail.com"))
+print(records.add_student(102, "Heather Lourd", "heatherlourd@gmail.com"))
+
+# Update a student's email and grades
+print(records.update_student(101, email="heatherlourd@gmail.com", grades={"Math": 90, "Science": 85}))
+
+# Enroll in a new course
+print(records.enroll_course(101, "Astronomy"))
+
+# Search for a student
+print(records.search_student(101))
+
+# Delete a student
+print(records.delete_student(102))
 
